@@ -1,0 +1,5 @@
+cookbook 'chef-jboss', :path => '/home/provisio/chef-jboss'
+cookbook 'java', :git => 'git://github.com/bryanwb/java.git', :ref => 'master'
+cookbook 'logrotate', :locked_version => '1.2.0'
+cookbook 'minitest-handler', :git => 'git://github.com/btm/minitest-handler-cookbook.git', :ref => 'master'
+cookbook 'chef_handler', :locked_version => '1.1.4'

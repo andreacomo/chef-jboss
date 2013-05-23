@@ -19,20 +19,27 @@
 
 include_recipe "sudo"
 
-jboss_user = "jboss"
 
-users_manage_noid jboss_user do
+jboss_user = node['jboss']['user']
+jboss_group = node['jboss']['group']
+service = "jboss"
+
+user jboss_user do
   action [ :remove, :create ]
 end
 
 
 # add sudoers
-sudo jboss_user do
-  template "app.erb"
-  variables(
-            {
-              "name" => jboss_user,
-              "service" => jboss_user
-            }
-            )
-end
+#sudo jboss_user do
+#  user jboss_user
+#  nopasswd true
+#  commands ['/etc/init.d/jboss restart']
+#
+#  template "app.erb"
+#  variables(
+#            {
+#              "name" => jboss_user,
+#              "service" => service
+#            }
+#  )
+#end

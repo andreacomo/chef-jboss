@@ -4,8 +4,9 @@ license          "Apache v2.0"
 description      "Installs/Configures jboss"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.13"
+name	         "jboss"
 
-%w{ java logrotate }.each do |cb|
+%w{ java logrotate sudo }.each do |cb|
   depends cb
 end
 
