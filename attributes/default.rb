@@ -13,8 +13,11 @@ default['jboss']['version'] = "7.1.0"
 default['jboss']['url'] = "http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.tar.gz" 
 default['jboss']['checksum'] = "88fd3fdac4f7951cee3396eff3d70e8166c3319de82d77374a24e3b422e0b2ad"
 default['jboss']['version'] = '7.1.1'
-default['jboss']['user'] = "jboss"
-default['jboss']['group'] = "jboss"
+#default['jboss']['user'] = "jboss"
+
+#default['jboss']['admin_user'] = ''
+#default['jboss']['admin_pass'] = ''
+
 default['jboss']['application'] = 'jboss'
 default['jboss']['config'] = 'standalone'
 default['jboss']['script'] = 'standalone.sh'
@@ -23,6 +26,7 @@ default['jboss']['manage_config_file'] = true
 default['jboss']['jdbc']['user'] = 'sa'
 default['jboss']['jdbc']['passwd'] = ''
 default['jboss']['jdbc']['schema'] = ''
+default['jboss']['jdbc']['jndi_name'] = ''
 default['jboss']['jdbc']['host'] = 'localhost'
 default['jboss']['jdbc']['transaction_isolation'] = nil
 default['jboss']['jdbc']['driver']['name'] = 'h2'

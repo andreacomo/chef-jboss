@@ -21,7 +21,6 @@ include_recipe "sudo"
 
 
 jboss_user = node['jboss']['user']
-jboss_group = node['jboss']['group']
 service = "jboss"
 
 user jboss_user do
@@ -29,7 +28,7 @@ user jboss_user do
 end
 
 
-# add sudoers
+# this cookbook is giving an error on centos 5.8 because /etc/sudoers.d doesn't exist
 #sudo jboss_user do
 #  user jboss_user
 #  nopasswd true
