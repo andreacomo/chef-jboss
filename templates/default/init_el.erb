@@ -44,7 +44,7 @@ if [ -z "$JBOSS_CONSOLE_LOG" ]; then
 fi
 
 if [ -z "$STARTUP_WAIT" ]; then
-  STARTUP_WAIT=30
+  STARTUP_WAIT=600
 fi
 
 if [ -z "$SHUTDOWN_WAIT" ]; then
@@ -105,10 +105,17 @@ start() {
   do
     grep 'JBoss AS.*started in' $JBOSS_CONSOLE_LOG > /dev/null
     if [ $? -eq 0 ] ; then
-      launched=true
-      break
+      #the message above is printed before initialization finishes.
+      #let's wait a little until server-state=running
+      server_state=$($JBOSS_HOME/bin/jboss-cli.sh -c --command="read-attribute server-state")
+      if [ $server_state == 'running' ]; then
+        launched=true
+        break
+      else
+        echo -n $"Waiting server-state... ($server_state)"
+      fi
     fi
-    sleep 1
+    sleep 5
     let count=$count+1;
   done
 
@@ -137,7 +144,21 @@ stop() {
     if [ $count -gt $kwait ]; then
       kill -9 $kpid
     fi
+
+    count=0
+    stopped=false
+    until [ $count -gt $SHUTDOWN_WAIT ]
+    do
+        grep 'JBOSS AS.*stopped in' $JBOSS_CONSOLE_LOG > /dev/null
+        if [ $? -eq 0 ] ; then
+            stopped=true
+            break
+        fi
+        sleep 1
+        let count=$count+1
+    done
   fi
+
   rm -f $JBOSS_PIDFILE
   success
   echo
