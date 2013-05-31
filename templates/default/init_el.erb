@@ -107,6 +107,7 @@ start() {
     if [ $? -eq 0 ] ; then
       #the message above is printed before initialization finishes.
       #let's wait a little until server-state=running
+      sleep 10
       server_state=$($JBOSS_HOME/bin/jboss-cli.sh -c --command="read-attribute server-state")
       if [ $server_state == 'running' ]; then
         launched=true
