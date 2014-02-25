@@ -44,7 +44,7 @@ end
 
 # template init file
 template "/etc/init.d/jboss" do
-  source "init_el.erb"
+  source "init_service.erb"
   mode "0755"
   owner "root"
   group "root"
