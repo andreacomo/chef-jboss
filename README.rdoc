@@ -27,3 +27,7 @@ Accept
 Author: Bryan W. Berry <bryan.berry@gmail.com>
 Copyright: 2012 Food and Agriculture Organization of the United Nations
 License: Apache v2.0
+
+= PASSWORD ENCRYPTION:
+Execute from command line:
+java -cp $JBOSS_HOME/modules/org/picketbox/main/picketbox-4.0.7.Final.jar:$JBOSS_HOME/modules/org/jboss/logging/main/jboss-logging-3.1.0.GA.jar org.picketbox.datasource.security.SecureIdentityLoginModule my-plain-password

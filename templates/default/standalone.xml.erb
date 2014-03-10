@@ -181,8 +181,8 @@
           <% if node['jboss']['jdbc'] -%>
             <datasources>
                 <datasource
-                    jndi-name="java:jboss/datasources/<%= node['jboss']['jdbc']['schema'].capitalize %>DS"
-                    pool-name="<%= node['jboss']['jdbc']['schema'].capitalize %>Pool" enabled="true" use-java-context="true">
+                    jndi-name="java:jboss/datasources/<%= node['jboss']['jdbc']['ds-name'] %>"
+                    pool-name="<%= node['jboss']['jdbc']['ds-name'] %>Pool" enabled="true" use-java-context="true" use-ccm="true">
                     <connection-url>jdbc:<%=
                     node['jboss']['jdbc']['driver']['name'] +
                   '://' + node['jboss']['jdbc']['host'] + '/' + node['jboss']['jdbc']['schema'] %></connection-url>
@@ -192,9 +192,22 @@
                     <transaction-isolation><%= tr %></transaction-isolation>
                     <% end -%>
                     <security>
+                        <% if node['jboss']['jdbc']['encrypted-password'] -%>
+                        <security-domain>EncryptedPassword</security-domain>
+                        <% else -%>
                         <user-name><%= node['jboss']['jdbc']['user'] %></user-name>
                         <password><%= node['jboss']['jdbc']['password'] %></password>
+                        <% end -%>
                     </security>
+                    <pool>
+                        <min-pool-size><%= node['jboss']['jdbc']['pool']['min-pool-size'] %></min-pool-size>
+                        <max-pool-size><%= node['jboss']['jdbc']['pool']['max-pool-size'] %></max-pool-size>
+                        <prefill><%= node['jboss']['jdbc']['pool']['prefill'] %></prefill>
+                    </pool>
+                    <statement>
+                        <prepared-statement-cache-size><%= node['jboss']['jdbc']['statement']['cache-size'] %></prepared-statement-cache-size>
+                        <share-prepared-statements><%= node['jboss']['jdbc']['statement']['share'] %></share-prepared-statements>
+                    </statement>
                 </datasource>
                 <drivers>
                     <driver name="<%= node['jboss']['jdbc']['driver']['name'] %>"
@@ -344,6 +357,16 @@
                         <policy-module code="Delegating" flag="required"/>
                     </authorization>
                 </security-domain>
+                <% if node['jboss']['jdbc']['encrypted-password'] -%>
+                <security-domain name="EncryptedPassword" cache-type="default">
+                    <authentication>
+                        <login-module code="org.picketbox.datasource.security.SecureIdentityLoginModule" flag="required">
+                            <module-option name="username" value="<%=node['jboss']['jdbc']['user'] %>"/>
+                            <module-option name="password" value="<%=node['jboss']['jdbc']['passwd'] %>"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
+                <% end -%>
             </security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
@@ -356,7 +379,7 @@
             <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
             <coordinator-environment default-timeout="300"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:web:1.1" default-virtual-server="default-host" native="false">
+        <subsystem xmlns="urn:jboss:domain:web:1.1" default-virtual-server="default-host" instance-id="<%=node['jboss']['web']['instance-id'] %>" native="<%=node['jboss']['web']['native'] %>">
             <connector name="http" protocol="HTTP/1.1" scheme="http" socket-binding="http"/>
             <virtual-server name="default-host" enable-welcome-root="true">
                 <alias name="localhost"/>
