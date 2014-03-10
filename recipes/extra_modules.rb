@@ -1,5 +1,7 @@
 # load modules using maven
 
+include_recipe "maven"
+
 extra_modules = node['jboss']['extra_modules'].to_hash
 
 unless extra_modules.empty?
