@@ -13,3 +13,8 @@ template "#{jboss_home}/standalone/configuration/standalone.xml" do
   source 'standalone.xml.erb'
   owner jboss_user
 end
+
+template "#{jboss_home}/bin/standalone.conf" do
+  source 'standalone.conf.erb'
+  owner jboss_user
+end
