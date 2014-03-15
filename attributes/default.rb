@@ -46,6 +46,7 @@ default['jboss']['jms_queues'] = []
 default['jboss']['web']['instance-id'] = 'jboss711'
 default['jboss']['web']['native'] = false
 default['jboss']['web']['welcome-root'] = true
+default['jboss']['web']['enable-ajp'] = false
 
 default['jboss']['java-opts']['xms'] = '64m'
 default['jboss']['java-opts']['xmx'] = '512m'
